@@ -1,0 +1,6 @@
+{
+  "is-main": true,
+  "import": [
+    "moonyacc-example/arithmetic/lib"
+  ]
+}
