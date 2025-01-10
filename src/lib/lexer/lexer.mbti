@@ -1,0 +1,14 @@
+package moonyacc-example/arithmetic/lib/lexer
+
+alias @moonyacc-example/arithmetic/lib/parser as @parser
+
+// Values
+fn tokenize(String) -> () -> (@parser.Token, Int, Int)
+
+// Types and methods
+type EndOfInput
+
+// Type aliases
+
+// Traits
+
