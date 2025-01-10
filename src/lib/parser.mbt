@@ -124,12 +124,12 @@ fn yy_action_1(
   _last_pos : Position,
   _args : ArrayView[(YYObj, Position, Position)]
 ) -> YYObj {
-  guard let YYObj_Int(_dollar1) = _args[0].0
-  guard let YYObj_Int(_dollar3) = _args[2].0
+  guard let YYObj_Int(lhs) = _args[0].0
+  guard let YYObj_Int(rhs) = _args[2].0
   YYObj_Int(
     {
       ()
-      _dollar1 + _dollar3
+      lhs + rhs
     },
   )
 }
@@ -139,12 +139,12 @@ fn yy_action_2(
   _last_pos : Position,
   _args : ArrayView[(YYObj, Position, Position)]
 ) -> YYObj {
-  guard let YYObj_Int(_dollar1) = _args[0].0
-  guard let YYObj_Int(_dollar3) = _args[2].0
+  guard let YYObj_Int(lhs) = _args[0].0
+  guard let YYObj_Int(rhs) = _args[2].0
   YYObj_Int(
     {
       ()
-      _dollar1 - _dollar3
+      lhs - rhs
     },
   )
 }
@@ -168,12 +168,12 @@ fn yy_action_4(
   _last_pos : Position,
   _args : ArrayView[(YYObj, Position, Position)]
 ) -> YYObj {
-  guard let YYObj_Int(_dollar1) = _args[0].0
-  guard let YYObj_Int(_dollar3) = _args[2].0
+  guard let YYObj_Int(lhs) = _args[0].0
+  guard let YYObj_Int(rhs) = _args[2].0
   YYObj_Int(
     {
       ()
-      _dollar1 * _dollar3
+      lhs * rhs
     },
   )
 }
