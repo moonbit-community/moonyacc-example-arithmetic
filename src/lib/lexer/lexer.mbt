@@ -2,7 +2,9 @@
 type! EndOfInput
 
 ///|
-pub fn tokenize(input : String) -> () -> (Token, Position, Position) {
+pub fn tokenize(
+  input : String
+) -> () -> (@parser.Token, @parser.Position, @parser.Position) {
   let end = input.length()
   let mut cursor = 0
   fn peek_char!() {
@@ -14,7 +16,7 @@ pub fn tokenize(input : String) -> () -> (Token, Position, Position) {
     cursor += 1
   }
 
-  fn read_token() {
+  fn read_token() -> (@parser.Token, @parser.Position, @parser.Position) {
     let start = cursor
     try {
       match peek_char!() {
