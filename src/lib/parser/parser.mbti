@@ -4,13 +4,13 @@ package moonyacc-example/arithmetic/lib/parser
 fn start(Array[(Token, Int, Int)]) -> Int!ParseError
 
 // Types and methods
-pub(all) type! ParseError {
+pub type! ParseError {
   UnexpectedToken(Token, (Int, Int), Array[TokenKind])
+  UnexpectedEndOfInput(Int, Array[TokenKind])
 }
 impl Show for ParseError
 
 pub(all) enum Token {
-  EOF
   NUMBER(Int)
   PLUS
   MINUS
@@ -24,7 +24,6 @@ impl Token {
 impl Show for Token
 
 pub(all) enum TokenKind {
-  TK_EOF
   TK_NUMBER
   TK_PLUS
   TK_MINUS

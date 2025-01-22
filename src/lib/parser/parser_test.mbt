@@ -10,7 +10,6 @@ test "parser" {
     (RPAREN, 6, 7),
     (STAR, 7, 8),
     (NUMBER(0), 8, 9),
-    (EOF, 9, 9), // no EOF would result in a weird error
   ]
   let result = @parser.start?(tokens)
   inspect!(result, content="Ok(3)")
