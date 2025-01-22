@@ -60,10 +60,10 @@ pub(all) type! ParseError {
 typealias YYObj = Error
 
 ///|
-type! YYObj_Void
+priv type! YYObj_Void
 
 ///|
-type! YYObj_Int Int
+priv type! YYObj_Int Int
 
 ///|
 typealias YYState = (YYSymbol) -> YYDecision
@@ -72,7 +72,7 @@ typealias YYState = (YYSymbol) -> YYDecision
 typealias YYAction = (Position, ArrayView[(YYObj, Position, Position)]) -> YYObj
 
 ///|
-enum YYDecision {
+priv enum YYDecision {
   Accept
   Shift(YYState)
   Reduce(Int, YYSymbol, YYAction)
@@ -81,7 +81,7 @@ enum YYDecision {
 }
 
 ///|
-enum YYSymbol {
+priv enum YYSymbol {
   T_EOF
   T_NUMBER
   T_PLUS
@@ -421,14 +421,14 @@ fn yy_state_15(_lookahead : YYSymbol) -> YYDecision {
 
 ///|
 fn yy_parse[T](
-  read_token : () -> (Token, Position, Position),
-  start_pos : Position,
+  tokens : Array[(Token, Position, Position)],
   start : YYState,
   return_ : (YYObj) -> T
 ) -> T!ParseError {
+  let mut cursor = 0
   let mut state_stack : @immut/list.T[YYState] = Cons(start, Nil)
   let data_stack : Array[(YYObj, Position, Position)] = []
-  let mut last_pos = start_pos
+  let mut last_pos = tokens[0].1
   let mut state = start
   let mut lookahead : (YYSymbol, (YYObj, Position, Position), Token)? = None
   let mut last_shifted_state_stack = state_stack
@@ -439,7 +439,8 @@ fn yy_parse[T](
         match lookahead {
           Some(la) => state(la.0)
           None => {
-            let (token, start_pos, end_pos) = read_token()
+            let (token, start_pos, end_pos) = tokens[cursor]
+            cursor += 1
             let (symbol, data) = yy_input(token, start_pos, end_pos)
             lookahead = Some((symbol, (data, start_pos, end_pos), token))
             state(symbol)
@@ -455,9 +456,7 @@ fn yy_parse[T](
         last_shifted_state_stack = state_stack
         state = next_state
         last_pos = la.1.2
-        let (token, start_pos, end_pos) = read_token()
-        let (symbol, data) = yy_input(token, start_pos, end_pos)
-        lookahead = Some((symbol, (data, start_pos, end_pos), token))
+        lookahead = None
       }
       Reduce(count, symbol, action)
       | ReduceNoLookahead(count, symbol, action) =>
@@ -551,11 +550,8 @@ fn error(
 }
 
 ///|
-pub fn start(
-  read_token : () -> (Token, Position, Position),
-  start_pos : Position
-) -> Int!ParseError {
-  yy_parse!(read_token, start_pos, yy_state_0, fn {
+pub fn start(tokens : Array[(Token, Position, Position)]) -> Int!ParseError {
+  yy_parse!(tokens, yy_state_0, fn {
     YYObj_Int(result) => result
     _ => panic()
   })

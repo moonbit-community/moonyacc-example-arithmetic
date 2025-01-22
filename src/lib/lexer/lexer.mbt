@@ -4,7 +4,8 @@ type! EndOfInput
 ///|
 pub fn tokenize(
   input : String
-) -> () -> (@parser.Token, @parser.Position, @parser.Position) {
+) -> Array[(@parser.Token, @parser.Position, @parser.Position)] {
+  let tokens : Array[(@parser.Token, @parser.Position, @parser.Position)] = []
   let end = input.length()
   let mut cursor = 0
   fn peek_char!() {
@@ -16,43 +17,38 @@ pub fn tokenize(
     cursor += 1
   }
 
-  fn read_token() -> (@parser.Token, @parser.Position, @parser.Position) {
+  fn read_token!() -> (@parser.Token, @parser.Position, @parser.Position) {
     let start = cursor
-    try {
-      match peek_char!() {
-        '0'..='9' as c => {
-          advance()
-          let num = read_number!(c)
-          (NUMBER(num), start, cursor)
-        }
-        '+' => {
-          advance()
-          (PLUS, start, cursor)
-        }
-        '-' => {
-          advance()
-          (MINUS, start, cursor)
-        }
-        '*' => {
-          advance()
-          (STAR, start, cursor)
-        }
-        '(' => {
-          advance()
-          (LPAREN, start, cursor)
-        }
-        ')' => {
-          advance()
-          (RPAREN, start, cursor)
-        }
-        ' ' | '\t' | '\r' | '\n' => {
-          advance()
-          read_token()
-        }
-        _ => panic()
+    match peek_char!() {
+      '0'..='9' as c => {
+        advance()
+        let num = read_number!(c)
+        (NUMBER(num), start, cursor)
       }
-    } catch {
-      EndOfInput => return (EOF, end, end)
+      '+' => {
+        advance()
+        (PLUS, start, cursor)
+      }
+      '-' => {
+        advance()
+        (MINUS, start, cursor)
+      }
+      '*' => {
+        advance()
+        (STAR, start, cursor)
+      }
+      '(' => {
+        advance()
+        (LPAREN, start, cursor)
+      }
+      ')' => {
+        advance()
+        (RPAREN, start, cursor)
+      }
+      ' ' | '\t' | '\r' | '\n' => {
+        advance()
+        read_token!()
+      }
       _ => panic()
     }
   }
@@ -73,5 +69,18 @@ pub fn tokenize(
     @strconv.parse_int!(buf.to_string())
   }
 
-  read_token
+  while true {
+    try {
+      read_token!()
+    } catch {
+      EndOfInput => {
+        tokens.push((EOF, cursor, cursor))
+        break
+      }
+      _ => panic()
+    } else {
+      token => tokens.push(token)
+    }
+  }
+  tokens
 }
