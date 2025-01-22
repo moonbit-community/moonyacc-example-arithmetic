@@ -1,7 +1,7 @@
 package moonyacc-example/arithmetic/lib/parser
 
 // Values
-fn start(() -> (Token, Int, Int), Int) -> Int!ParseError
+fn start(Array[(Token, Int, Int)]) -> Int!ParseError
 
 // Types and methods
 pub(all) type! ParseError {
@@ -33,14 +33,6 @@ pub(all) enum TokenKind {
   TK_RPAREN
 }
 impl Show for TokenKind
-
-type YYDecision
-
-type YYObj_Int
-
-type YYObj_Void
-
-type YYSymbol
 
 // Type aliases
 pub typealias Position = Int
