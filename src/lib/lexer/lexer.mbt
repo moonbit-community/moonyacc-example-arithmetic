@@ -73,10 +73,7 @@ pub fn tokenize(
     try {
       read_token!()
     } catch {
-      EndOfInput => {
-        tokens.push((EOF, cursor, cursor))
-        break
-      }
+      EndOfInput => break
       _ => panic()
     } else {
       token => tokens.push(token)
