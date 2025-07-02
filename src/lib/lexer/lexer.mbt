@@ -1,5 +1,5 @@
 ///|
-type! EndOfInput
+priv suberror EndOfInput
 
 ///|
 pub fn tokenize(
@@ -8,21 +8,37 @@ pub fn tokenize(
   let tokens : Array[(@parser.Token, @parser.Position, @parser.Position)] = []
   let end = input.length()
   let mut cursor = 0
-  fn peek_char!() {
+  fn peek_char() raise {
     guard cursor < end else { raise EndOfInput }
-    input[cursor]
+    input.char_at(cursor)
   }
 
   fn advance() {
     cursor += 1
   }
 
-  fn read_token!() -> (@parser.Token, @parser.Position, @parser.Position) {
+  letrec read_number = fn(first_char : Char) raise {
+    let buf = StringBuilder::new()
+    buf.write_char(first_char)
+    while true {
+      match (try? peek_char()) {
+        Ok('0'..='9' as c) => {
+          buf.write_char(c)
+          advance()
+        }
+        Ok(_) | Err(EndOfInput) => break
+        Err(err) => raise err
+      }
+    }
+    @strconv.parse_int(buf.to_string())
+  }
+
+  fn read_token() -> (@parser.Token, @parser.Position, @parser.Position) raise {
     let start = cursor
-    match peek_char!() {
+    match peek_char() {
       '0'..='9' as c => {
         advance()
-        let num = read_number!(c)
+        let num = read_number(c)
         (NUMBER(num), start, cursor)
       }
       '+' => {
@@ -47,32 +63,14 @@ pub fn tokenize(
       }
       ' ' | '\t' | '\r' | '\n' => {
         advance()
-        read_token!()
+        read_token()
       }
       _ => panic()
     }
   }
 
-  fn read_number!(first_char : Char) {
-    let buf = StringBuilder::new()
-    buf.write_char(first_char)
-    while true {
-      match peek_char?() {
-        Ok('0'..='9' as c) => {
-          buf.write_char(c)
-          advance()
-        }
-        Ok(_) | Err(EndOfInput) => break
-        Err(err) => raise err
-      }
-    }
-    @strconv.parse_int!(buf.to_string())
-  }
-
   while true {
-    try {
-      read_token!()
-    } catch {
+    try read_token() catch {
       EndOfInput => break
       _ => panic()
     } else {
