@@ -1,3 +1,4 @@
+///|
 test "parser" {
   // let tokens = @lexer.tokenize("3 + (2 - 5) * 0")
   let tokens : Array[(@parser.Token, @parser.Position, @parser.Position)] = [
@@ -11,6 +12,6 @@ test "parser" {
     (STAR, 7, 8),
     (NUMBER(0), 8, 9),
   ]
-  let result = @parser.start?(tokens)
-  inspect!(result, content="Ok(3)")
+  let result = try? @parser.start(tokens)
+  inspect(result, content="Ok(3)")
 }
