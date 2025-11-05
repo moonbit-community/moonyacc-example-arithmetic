@@ -1,7 +1,7 @@
 ///|
 test "parser" {
   // let tokens = @lexer.tokenize("3 + (2 - 5) * 0")
-  let tokens : Array[(@parser.Token, @parser.Position, @parser.Position)] = [
+  let tokens : Array[(@parser.Token, Int, Int)] = [
     (NUMBER(3), 0, 1),
     (PLUS, 1, 2),
     (LPAREN, 2, 3),

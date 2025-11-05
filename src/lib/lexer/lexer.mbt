@@ -4,13 +4,13 @@ priv suberror EndOfInput
 ///|
 pub fn tokenize(
   input : String
-) -> Array[(@parser.Token, @parser.Position, @parser.Position)] {
-  let tokens : Array[(@parser.Token, @parser.Position, @parser.Position)] = []
+) -> Array[(@parser.Token, Int, Int)] {
+  let tokens : Array[(@parser.Token, Int, Int)] = []
   let end = input.length()
   let mut cursor = 0
   fn peek_char() raise {
     guard cursor < end else { raise EndOfInput }
-    input.char_at(cursor)
+    input.get_char(cursor).unwrap()
   }
 
   fn advance() {
@@ -33,7 +33,7 @@ pub fn tokenize(
     @strconv.parse_int(buf.to_string())
   }
 
-  fn read_token() -> (@parser.Token, @parser.Position, @parser.Position) raise {
+  fn read_token() -> (@parser.Token, Int, Int) raise {
     let start = cursor
     match peek_char() {
       '0'..='9' as c => {
