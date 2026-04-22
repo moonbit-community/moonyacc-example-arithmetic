@@ -1,4 +1,7 @@
 {
+    "import": [
+        "moonbitlang/core/list"
+    ],
     "pre-build": [
         {
             "command": "$mod_dir/.mooncakes/moonbitlang/yacc/moonyacc $input | moonfmt > $output",
