@@ -1,5 +1,5 @@
-%derive<Show> Token
-%derive<Show> ParseError
+%derive<Debug> Token
+%derive<Debug> ParseError
 %position<Int>
 %start start
 
@@ -41,6 +41,42 @@ term
 /* C style comment */
 
 %%
+
+pub impl Show for Token with output(self, logger) {
+  match self {
+    NUMBER(value) => {
+      logger.write_string("NUMBER(")
+      logger.write_object(value)
+      logger.write_string(")")
+    }
+    PLUS => logger.write_string("PLUS")
+    MINUS => logger.write_string("MINUS")
+    STAR => logger.write_string("STAR")
+    LPAREN => logger.write_string("LPAREN")
+    RPAREN => logger.write_string("RPAREN")
+  }
+}
+
+pub impl Show for ParseError with output(self, logger) {
+  match self {
+    UnexpectedToken(token, loc, expected) => {
+      logger.write_string("UnexpectedToken(")
+      logger.write_object(token)
+      logger.write_string(", ")
+      logger.write_object(loc)
+      logger.write_string(", ")
+      logger.write_object(expected)
+      logger.write_string(")")
+    }
+    UnexpectedEndOfInput(pos, expected) => {
+      logger.write_string("UnexpectedEndOfInput(")
+      logger.write_object(pos)
+      logger.write_string(", ")
+      logger.write_object(expected)
+      logger.write_string(")")
+    }
+  }
+}
 
 fn footer() -> Unit {
   ()
