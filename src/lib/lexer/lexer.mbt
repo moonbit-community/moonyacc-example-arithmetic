@@ -32,7 +32,7 @@ pub fn tokenize(
         _ => break
       }
     }
-    @strconv.parse_int(buf.to_string())
+    @string.parse_int(buf.to_string())
   }
 
   fn read_token() -> (@parser.Token, Int, Int) raise {
