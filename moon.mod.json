@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "deps": {},
   "bin-deps": {
-    "moonbitlang/yacc": "0.7.2"
+    "moonbitlang/yacc": "0.7.13"
   },
   "readme": "README.md",
   "repository": "",
