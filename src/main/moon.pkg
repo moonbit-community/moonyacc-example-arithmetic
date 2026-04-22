@@ -1,0 +1,8 @@
+import {
+  "moonyacc-example/arithmetic/lib/parser",
+  "moonyacc-example/arithmetic/lib/lexer",
+}
+
+options(
+  "is-main": true,
+)

@@ -2,9 +2,7 @@
 priv suberror EndOfInput
 
 ///|
-pub fn tokenize(
-  input : String
-) -> Array[(@parser.Token, Int, Int)] {
+pub fn tokenize(input : String) -> Array[(@parser.Token, Int, Int)] {
   let tokens : Array[(@parser.Token, Int, Int)] = []
   let end = input.length()
   let mut cursor = 0
@@ -75,7 +73,7 @@ pub fn tokenize(
     try read_token() catch {
       EndOfInput => break
       _ => panic()
-    } else {
+    } noraise {
       token => tokens.push(token)
     }
   }
