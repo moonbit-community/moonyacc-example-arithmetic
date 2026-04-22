@@ -1,0 +1,18 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "moonyacc-example/arithmetic/lib/lexer"
+
+import {
+  "moonyacc-example/arithmetic/lib/parser",
+}
+
+// Values
+pub fn tokenize(String) -> Array[(@parser.Token, Int, Int)]
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
