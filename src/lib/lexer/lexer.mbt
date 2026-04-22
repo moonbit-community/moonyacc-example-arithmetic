@@ -21,13 +21,15 @@ pub fn tokenize(
     let buf = StringBuilder::new()
     buf.write_char(first_char)
     while true {
-      match (try? peek_char()) {
-        Ok('0'..='9' as c) => {
+      try peek_char() catch {
+        EndOfInput => break
+        err => raise err
+      } noraise {
+        '0'..='9' as c => {
           buf.write_char(c)
           advance()
         }
-        Ok(_) | Err(EndOfInput) => break
-        Err(err) => raise err
+        _ => break
       }
     }
     @strconv.parse_int(buf.to_string())
