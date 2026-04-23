@@ -1,5 +1,0 @@
-{
-  "import": [
-    "moonyacc-example/arithmetic/lib/parser"
-  ]
-}

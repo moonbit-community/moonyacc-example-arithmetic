@@ -2,9 +2,7 @@
 priv suberror EndOfInput
 
 ///|
-pub fn tokenize(
-  input : String
-) -> Array[(@parser.Token, Int, Int)] {
+pub fn tokenize(input : String) -> Array[(@parser.Token, Int, Int)] {
   let tokens : Array[(@parser.Token, Int, Int)] = []
   let end = input.length()
   let mut cursor = 0
@@ -21,16 +19,18 @@ pub fn tokenize(
     let buf = StringBuilder::new()
     buf.write_char(first_char)
     while true {
-      match (try? peek_char()) {
-        Ok('0'..='9' as c) => {
+      try peek_char() catch {
+        EndOfInput => break
+        err => raise err
+      } noraise {
+        '0'..='9' as c => {
           buf.write_char(c)
           advance()
         }
-        Ok(_) | Err(EndOfInput) => break
-        Err(err) => raise err
+        _ => break
       }
     }
-    @strconv.parse_int(buf.to_string())
+    @string.parse_int(buf.to_string())
   }
 
   fn read_token() -> (@parser.Token, Int, Int) raise {
@@ -73,7 +73,7 @@ pub fn tokenize(
     try read_token() catch {
       EndOfInput => break
       _ => panic()
-    } else {
+    } noraise {
       token => tokens.push(token)
     }
   }
