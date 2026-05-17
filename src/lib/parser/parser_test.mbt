@@ -13,5 +13,5 @@ test "parser" {
     (NUMBER(0), 8, 9),
   ]
   let result = try? @parser.start(tokens)
-  inspect(result, content="Ok(3)")
+  debug_inspect(result, content="Ok(3)")
 }
