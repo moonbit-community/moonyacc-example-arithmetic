@@ -63,16 +63,16 @@ pub impl Show for ParseError with output(self, logger) {
       logger.write_string("UnexpectedToken(")
       logger.write_object(token)
       logger.write_string(", ")
-      logger.write_object(loc)
+      logger.write_string(@debug.to_string(loc))
       logger.write_string(", ")
-      logger.write_object(expected)
+      logger.write_string(@debug.to_string(expected))
       logger.write_string(")")
     }
     UnexpectedEndOfInput(pos, expected) => {
       logger.write_string("UnexpectedEndOfInput(")
       logger.write_object(pos)
       logger.write_string(", ")
-      logger.write_object(expected)
+      logger.write_string(@debug.to_string(expected))
       logger.write_string(")")
     }
   }
