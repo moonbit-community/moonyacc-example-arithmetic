@@ -1,6 +1,5 @@
 ///|
 test "lexer" {
   let tokens = @lexer.tokenize("3 + (2 - 5) * 0")
-  let result = try? @parser.start(tokens)
-  debug_inspect(result, content="Ok(3)")
+  assert_eq(@parser.start(tokens), 3)
 }
