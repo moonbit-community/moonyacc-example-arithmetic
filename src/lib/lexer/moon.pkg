@@ -2,3 +2,7 @@ import {
   "moonyacc-example/arithmetic/lib/parser",
   "moonbitlang/core/string",
 }
+
+import {
+  "moonbitlang/core/test",
+} for "test"

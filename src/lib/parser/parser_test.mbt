@@ -12,6 +12,5 @@ test "parser" {
     (STAR, 7, 8),
     (NUMBER(0), 8, 9),
   ]
-  let result = try? @parser.start(tokens)
-  debug_inspect(result, content="Ok(3)")
+  assert_eq(@parser.start(tokens), 3)
 }

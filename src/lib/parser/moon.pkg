@@ -3,12 +3,9 @@ import {
   "moonbitlang/core/list",
 }
 
-options(
-  "pre-build": [
-    {
-      "command": "$mod_dir/.mooncakes/moonbitlang/yacc/moonyacc $input | moonfmt > $output",
-      "input": "parser.mbty",
-      "output": "parser.mbt",
-    },
-  ],
+rule(
+  name: "moonyacc",
+  command: "moon runwasm moonbitlang/yacc@0.7.14 $input | moonfmt > $output",
 )
+
+dev_build(rule: "moonyacc", input: "parser.mbty", output: "parser.mbt")
